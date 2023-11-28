@@ -9,6 +9,25 @@ app.set('view engine', 'handlebars')
 
 app.use(express.static('public'))
 
+app.post('/completar', (requisicao, resposta) =>{
+    const id = requisicao.body.id
+
+    const sql = `
+        UPDATE tarefas 
+        SET completa = '1'
+        WHERE id = ${id}
+    `
+
+    conexao.query(sql, (erro) => {
+        if (erro) {
+            return console.log(erro)
+        }
+
+        resposta.redirect('/')
+    })
+
+})
+
 app.post('/criar', (requisicao, resposta) =>{
     const descricao = requisicao.body.descricao
     const completa = 0
